@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Typography, Card, CardContent, Grid, Box, Divider, Button, Collapse, TextField, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Container, Typography, Card, CardContent, Grid, Box, Divider, Button, Collapse, TextField, Select, MenuItem, FormControl, InputAdornment } from '@mui/material';
 import { styled } from '@mui/system';
 import { jsPDF } from "jspdf";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -102,42 +102,53 @@ const OrdersPage = () => {
         justifyContent: 'space-between', 
         alignItems: 'center', 
         mb: 3,  
-        borderRadius: '12px', 
-        padding: '12px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        borderRadius: '16px', 
+        padding: '16px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+        backgroundColor: '#fff'
       }}>
         <TextField
-          label="Search orders"
+          placeholder="Search events..."
           variant="outlined"
           value={searchTerm}
           onChange={handleSearchChange}
           InputProps={{
             startAdornment: (
-              <SearchIcon color="action" />
+              <InputAdornment position="start">
+                <SearchIcon sx={{ color: 'rgba(0, 0, 0, 0.54)' }} />
+              </InputAdornment>
             ),
           }}
           sx={{
             flexGrow: 1,
             marginRight: 2,
             '& .MuiOutlinedInput-root': {
-              height: '40px',
+              height: '48px',
+              borderRadius: '24px',
+              backgroundColor: 'white',
+              borderColor: 'rgba(0, 0, 0, 0.23)',
             },
           }}
         />
         <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-          <InputLabel id="sort-select-label">Sort by</InputLabel>
           <Select
-            labelId="sort-select-label"
             value={sortOption}
             onChange={handleSortChange}
-            label="Sort by"
-            sx={{ height: '40px' }}
+            displayEmpty
+            inputProps={{ 'aria-label': 'Sort by' }}
+            sx={{
+              height: '48px',
+              borderRadius: '24px',
+              backgroundColor: 'white',
+              borderColor: 'rgba(0, 0, 0, 0.23)',
+            }}
           >
-            <MenuItem value="">
-              <em>None</em>
+            <MenuItem value="" disabled>
+              <em>Sort by</em>
             </MenuItem>
             <MenuItem value="date">Date</MenuItem>
             <MenuItem value="name">Name</MenuItem>
+            <MenuItem value="price">Price</MenuItem>
           </Select>
         </FormControl>
       </Box>
@@ -197,7 +208,7 @@ const OrdersPage = () => {
                     ))}
                   </Box>
                   <Typography variant="h6" align="right" sx={{ mt: 2 }}>
-                    Total Price: ${order.totalPrice.toFixed(2)}
+                    Total Price: ₹{order.totalPrice.toFixed(2)}
                   </Typography>
                   <Button 
                     variant="contained" 

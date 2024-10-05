@@ -43,7 +43,10 @@ const DrawerStyled = styled(Drawer)(({ theme }) => ({
 
 const Content = styled('main')(({ theme }) => ({
   flexGrow: 1,
-  padding: theme.spacing(4),
+  paddingTop: -10 ,
+  paddingLeft: theme.spacing(3),
+  paddingRight: theme.spacing(3),
+  paddingBottom: theme.spacing(3),
   backgroundColor: theme.palette.background.default,
 }));
 
@@ -140,7 +143,7 @@ export default function ClientDashboard() {
       </DrawerStyled>
       <Content>
         <Toolbar />
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ mt: 2 }}> {/* Added margin top */}
           <Box sx={{ 
             bgcolor: 'background.paper', 
             borderRadius: 4, 

@@ -437,19 +437,20 @@ const EventList = () => {
         justifyContent: 'space-between', 
         alignItems: 'center', 
         mb: 3,  
-        borderRadius: '12px', 
-        padding: '12px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        borderRadius: '16px', 
+        padding: '16px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+        backgroundColor: '#fff'
       }}>
         <TextField
-          label="Search events"
+          placeholder="Search events..."
           variant="outlined"
           value={searchTerm}
           onChange={handleSearchChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <SearchIcon color="black" />
+                <SearchIcon sx={{ color: 'rgba(0, 0, 0, 0.54)' }} />
               </InputAdornment>
             ),
           }}
@@ -457,41 +458,28 @@ const EventList = () => {
             flexGrow: 1,
             marginRight: 2,
             '& .MuiOutlinedInput-root': {
-              height: '40px',
-              '& fieldset': {
-                borderColor: 'black',
-              },
-              '&:hover fieldset': {
-                borderColor: 'black',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: 'black',
-              },
+              height: '48px',
+              borderRadius: '24px',
+              backgroundColor: 'white',
+              borderColor: 'rgba(0, 0, 0, 0.23)',
             },
           }}
         />
         <FormControl variant="outlined" sx={{ minWidth: 120 }}>
-          <InputLabel id="sort-select-label" sx={{ lineHeight: '1em', fontSize: '16px', textAlign: 'center' }}>Sort by</InputLabel>
           <Select
-            labelId="sort-select-label"
             value={sortOption}
             onChange={handleSortChange}
-            label="Sort by"
+            displayEmpty
+            inputProps={{ 'aria-label': 'Sort by' }}
             sx={{
-              height: '40px',
-              '& .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'black',
-              },
-              '&:hover .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'black',
-              },
-              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                borderColor: 'black',
-              },
+              height: '48px',
+              borderRadius: '24px',
+              backgroundColor: 'white',
+              borderColor: 'rgba(0, 0, 0, 0.23)',
             }}
           >
-            <MenuItem value="">
-              <em>None</em>
+            <MenuItem value="" disabled>
+              <em>Sort by</em>
             </MenuItem>
             <MenuItem value="date">Date</MenuItem>
             <MenuItem value="name">Name</MenuItem>
