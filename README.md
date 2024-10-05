@@ -142,9 +142,6 @@ Overview of security measures implemented in EventMaster:
 
 - Data encryption
 - Input validation and sanitization
-- Rate limiting
-- CSRF protection
-- Regular security audits
 
 ## Performance Optimization
 
@@ -153,8 +150,6 @@ Techniques used to ensure EventMaster's high performance:
 - Database indexing
 - Caching strategies
 - Code splitting and lazy loading
-- Image optimization
-- CDN usage for static assets
 
 ## Troubleshooting
 
@@ -163,7 +158,6 @@ Common issues and their solutions:
 - Installation problems
 - Database connection issues
 - Payment gateway integration troubleshooting
-- Performance bottlenecks
 
 ## Contributing
 
