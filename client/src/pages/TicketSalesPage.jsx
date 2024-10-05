@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Container, Typography, Grid, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress, Card, CardContent } from '@mui/material';
+import { Container, Typography, Grid, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, CircularProgress, Card, CardContent, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import axios from 'axios';
 import { motion } from 'framer-motion';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 const StyledCard = styled(Card)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius * 2,
@@ -38,6 +41,29 @@ const TicketSalesPage = () => {
 
     fetchData();
   }, []);
+
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(salesData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sales Data");
+    XLSX.writeFile(wb, "sales_data.xlsx");
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+    doc.autoTable({
+      head: [['Receipt ID', 'Event', 'Customer', 'Tickets', 'Total Price', 'Date']],
+      body: salesData.map(sale => [
+        sale.receiptId,
+        sale.eventDetails.name,
+        sale.userDetails.name,
+        sale.selectedSeats.length,
+        `₹${sale.totalPrice.toLocaleString()}`,
+        sale.date
+      ]),
+    });
+    doc.save('sales_data.pdf');
+  };
 
   if (loading) {
     return (
@@ -158,9 +184,19 @@ const TicketSalesPage = () => {
           >
             <StyledCard>
               <CardContent>
-                <Typography variant="h6" gutterBottom sx={{ color: '#000' }}>
-                  Recent Sales
-                </Typography>
+                <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+                  <Typography variant="h6" sx={{ color: '#000' }}>
+                    Recent Sales
+                  </Typography>
+                  <Box>
+                    <Button onClick={exportToExcel} variant="outlined" sx={{ mr: 1 }}>
+                      Export to Excel
+                    </Button>
+                    <Button onClick={exportToPDF} variant="outlined">
+                      Export to PDF
+                    </Button>
+                  </Box>
+                </Box>
                 <TableContainer>
                   <Table>
                     <TableHead>

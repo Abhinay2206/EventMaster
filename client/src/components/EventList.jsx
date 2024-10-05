@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
-import { Card,InputLabel, CardContent, CardActions, Button, Typography, Grid, Container, Dialog, DialogTitle, DialogContent, DialogActions, Box, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, TextField, Collapse, Paper, Select, MenuItem, Divider, InputAdornment } from '@mui/material';
+import { Card, InputLabel, CardContent, CardActions, Button, Typography, Grid, Container, Dialog, DialogTitle, DialogContent, DialogActions, Box, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, TextField, Collapse, Paper, Select, MenuItem, Divider, InputAdornment, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import SearchIcon from '@mui/icons-material/Search';
+import ShareIcon from '@mui/icons-material/Share';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -201,7 +202,7 @@ const EventList = () => {
 
   const handleSeatSelection = (seatId) => {
     if (bookedSeats[selectedEvent._id].includes(seatId)) {
-      return; // Don't allow selection of booked seats
+      return; 
     }
     setSelectedSeats((prevSelectedSeats) => {
       if (prevSelectedSeats.includes(seatId)) {
@@ -427,6 +428,22 @@ const EventList = () => {
       }
     });
 
+  const handleShareEvent = (event) => {
+    if (navigator.share) {
+      navigator.share({
+        title: event.name,
+        text: `Check out this event: ${event.name}`,
+        url: `${window.location.origin}/event/${event._id}`,
+      })
+        .then(() => console.log('Successful share'))
+        .catch((error) => console.log('Error sharing', error));
+    } else {
+      console.log('Web Share API not supported');
+      // Fallback behavior for browsers that don't support Web Share API
+      alert(`Share this link: ${window.location.origin}/event/${event._id}`);
+    }
+  };
+
   return (
     <Container>
       <Typography variant="h4" component="h1" gutterBottom sx={{  fontWeight: 400,my: 4, marginBottom: '32px' }}>
@@ -503,10 +520,13 @@ const EventList = () => {
                   </EventInfo>
                 ))}
               </StyledCardContent>
-              <CardActions sx={{ padding: '16px' }}>
+              <CardActions sx={{ padding: '16px', justifyContent: 'space-between' }}>
                 <BookButton size="medium" variant="contained" color="primary" onClick={() => handleBookNow(event)}>
                   Book Now
                 </BookButton>
+                <IconButton onClick={() => handleShareEvent(event)} color="primary">
+                  <ShareIcon />
+                </IconButton>
               </CardActions>
             </StyledCard>
           </Grid>

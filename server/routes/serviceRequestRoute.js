@@ -14,7 +14,7 @@ router.post('/service-requests', async (req, res) => {
   }
 });
 
-router.get('/get-service-requests/:email', async (req, res) => {
+router.get('/getAll-service-requests/:email', async (req, res) => {
   try {
     const { email } = req.params.email;
     if (!email) {

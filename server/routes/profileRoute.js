@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 
 router.get('/getDetails/:email', async (req, res) => {
   try {
-    console.log(`Fetching details for email: ${req.params.email}`);  // Add this for debugging
     const user = await User.findOne({ email: req.params.email }).select('-password');
     if (!user) {
       console.error('User not found');
@@ -33,12 +32,17 @@ router.put('/updateDetails/:email', async (req, res) => {
       { new: true, runValidators: true }
     ).select('-password');
 
-    if (!updatedUser) return res.status(404).json({ message: 'User not found' });
+    if (!updatedUser) {
+      console.error('User not found');
+      return res.status(404).json({ message: 'User not found' });
+    }
+
     res.json(updatedUser);
   } catch (error) {
-    console.error('Error updating user details:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error updating user details:', error); // Log the full error
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
+
 
 module.exports = router;

@@ -23,14 +23,18 @@
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.3.0",
     "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.3",
     "lucide-react": "^0.446.0",
     "postcss": "^8.4.47",
+    "qrcode": "^1.5.4",
+    "qrcode.react": "^4.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scroll-parallax": "^3.4.5",
     "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

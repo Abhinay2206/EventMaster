@@ -13,9 +13,12 @@ import {
   Box,
   Link,
   useTheme,
-  useMediaQuery
+  useMediaQuery,
+  Divider
 } from '@mui/material';
 import axios from 'axios';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import GoogleIcon from '@mui/icons-material/Google';
 
 const LoginPage = () => {
   const [loginType, setLoginType] = useState('');
@@ -50,6 +53,14 @@ const LoginPage = () => {
 
   const handleCreateAccount = () => {
     navigate('/register');
+  };
+
+  const handleGithubLogin = () => {
+    console.log('GitHub login clicked');
+  };
+
+  const handleGoogleLogin = () => {
+    console.log('Google login clicked');
   };
 
   return (
@@ -132,6 +143,37 @@ const LoginPage = () => {
             disabled={!loginType}
           >
             Sign In
+          </Button>
+          <Divider sx={{ my: 2 }}>Or</Divider>
+          <Button
+            fullWidth
+            variant="outlined"
+            startIcon={<GitHubIcon />}
+            onClick={handleGithubLogin}
+            sx={{ 
+              mb: 2, 
+              py: 1.5,
+              borderRadius: '8px',
+              fontSize: '1rem',
+              textTransform: 'none',
+            }}
+          >
+            Sign in with GitHub
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            startIcon={<GoogleIcon />}
+            onClick={handleGoogleLogin}
+            sx={{ 
+              mb: 2, 
+              py: 1.5,
+              borderRadius: '8px',
+              fontSize: '1rem',
+              textTransform: 'none',
+            }}
+          >
+            Sign in with Google
           </Button>
           <Box sx={{ textAlign: 'center', mt: 2 }}>
             <Typography variant="body2">
