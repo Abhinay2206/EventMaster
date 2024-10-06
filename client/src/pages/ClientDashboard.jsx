@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { AppBar, Toolbar, Drawer, List, ListItem, ListItemIcon, ListItemText, Container, Typography, IconButton, Box, useTheme } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -8,10 +8,6 @@ import EventIcon from '@mui/icons-material/Event';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SupportIcon from '@mui/icons-material/Support';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import EventList from '../components/EventList';
-import ProfilePage from './ProfilePage';
-import OrdersPage from '../components/ordersPage';
-import ServiceRequest from './ServiceRequest';
 
 const drawerWidth = 240;
 
@@ -61,28 +57,24 @@ const ListItemStyled = styled(ListItem)(({ theme }) => ({
 }));
 
 export default function ClientDashboard() {
-  const [selectedPage, setSelectedPage] = useState('Events');
+  const [selectedPage, setSelectedPage] = useState('events');
   const navigate = useNavigate();
+  const location = useLocation();
   const theme = useTheme();
+
+  useEffect(() => {
+    const path = location.pathname.split('/').pop();
+    setSelectedPage(path || 'events');
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
     navigate('/');
   };
 
-  const renderContent = () => {
-    switch (selectedPage) {
-      case 'Events':
-        return <EventList />;
-      case 'My Orders':
-        return <OrdersPage />;
-      case 'Service Request':
-        return <ServiceRequest />;
-      case 'Profile':
-        return <ProfilePage />;
-      default:
-        return <Typography>Events Content</Typography>;
-    }
+  const handleNavigation = (route) => {
+    setSelectedPage(route);
+    navigate(`/client-dashboard/${route}`);
   };
 
   return (
@@ -108,18 +100,18 @@ export default function ClientDashboard() {
         <Box sx={{ p: 2 }}>
           <List>
             {[
-              { text: 'Events', icon: <EventIcon /> },
-              { text: 'My Orders', icon: <ShoppingCartIcon /> },
-              { text: 'Service Request', icon: <SupportIcon /> },
-              { text: 'Profile', icon: <AccountCircleIcon /> },
+              { text: 'Events', icon: <EventIcon />, route: 'events' },
+              { text: 'My Orders', icon: <ShoppingCartIcon />, route: 'orders' },
+              { text: 'Service Request', icon: <SupportIcon />, route: 'service-request' },
+              { text: 'Profile', icon: <AccountCircleIcon />, route: 'profile' },
             ].map((item) => (
               <ListItemStyled
                 button
                 key={item.text}
-                onClick={() => setSelectedPage(item.text)}
-                selected={selectedPage === item.text}
+                onClick={() => handleNavigation(item.route)}
+                selected={selectedPage === item.route}
                 sx={{
-                  backgroundColor: selectedPage === item.text ? 'action.selected' : 'transparent',
+                  backgroundColor: selectedPage === item.route ? 'action.selected' : 'transparent',
                   '&.Mui-selected': {
                     backgroundColor: theme.palette.primary.main,
                     color: theme.palette.primary.contrastText,
@@ -132,7 +124,7 @@ export default function ClientDashboard() {
                   },
                 }}
               >
-                <ListItemIcon sx={{ color: selectedPage === item.text ? theme.palette.primary.main : theme.palette.text.primary }}>
+                <ListItemIcon sx={{ color: selectedPage === item.route ? theme.palette.primary.main : theme.palette.text.primary }}>
                   {item.icon}
                 </ListItemIcon>
                 <ListItemText primary={item.text} />
@@ -154,7 +146,7 @@ export default function ClientDashboard() {
               boxShadow: '0 6px 30px rgba(0,0,0,0.15)',
             }
           }}>
-            {renderContent()}
+            <Outlet />
           </Box>
         </Container>
       </Content>
